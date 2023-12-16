@@ -1,14 +1,11 @@
-'use client'
 import {UserCircleIcon} from "@heroicons/react/20/solid";
 import AddNewUser from "@/app/ui/admin/users/AddNewUser";
-import useSWR from "swr";
 import {fetchAllUsers} from "@/services/users";
+import {User} from "@/types";
+import Image from "next/image";
 
-export default function UserTable() {
-    const {data: users, error} = useSWR("users", fetchAllUsers);
-    if (error) {
-        return <p className={"text-red-800 p-2"}>{error}</p>
-    }
+export default async function UserTable() {
+    const users: User[] = await fetchAllUsers();
     return (
         <div className="px-4 sm:px-6 lg:px-8">
 
@@ -48,8 +45,9 @@ export default function UserTable() {
                                         <div className="flex items-center">
                                             <div className="h-11 w-11 flex-shrink-0">
                                                 {user?.image ?
-                                                    <img className="h-11 w-11 rounded-full" src={user.image}
-                                                         alt="img"/> :
+                                                    <Image width={44} height={44} className="h-11 w-11 rounded-full"
+                                                           src={user.image}
+                                                           alt="img"/> :
                                                     <UserCircleIcon/>
                                                 }
                                             </div>
